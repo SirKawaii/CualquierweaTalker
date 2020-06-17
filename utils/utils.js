@@ -9,8 +9,9 @@ function GetToken() {
 }
 
 function GetFacebookToken(){
-    //not inplemented
+    //not implemented
 }
+
 
 // json query option.
 let options = {

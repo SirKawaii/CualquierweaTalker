@@ -81,9 +81,7 @@ const talker = {
 
     // limit to 300 characteres
     console.log("talk current channel : " + talker.current_channel );
-
     let parsedMessage = message.content.replace(prefix + "talk","");
-    console.log(parsedMessage);
     let current_message = parsedMessage !== ""? parsedMessage  : null  ;
     console.log("current message: " + current_message);
 
@@ -103,7 +101,7 @@ const talker = {
         }
       });
     }else{
-      message.reply('Acuerdate unirte a un canal de voz pao culiao!');
+      message.reply('Acuerdate unirte a un canal de voz pao culiao! 🍰');
     }
   },
 
