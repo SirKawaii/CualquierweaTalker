@@ -42,6 +42,23 @@ client.on('message', msg => {
 let token = Utils.GetToken();
 client.login(token);
 
+
+client.on('voiceStateUpdate', (oldMember, newMember) => {
+  let newUserChannel = newMember.member.displayName;
+  let oldUserChannel = oldMember.member.displayName;
+
+  if(oldUserChannel === undefined && newUserChannel !== undefined) {
+
+    let message = ("¡Pero miren, " +newUserChannel +" ha llegado!") 
+    talker.vocalize(message, null);
+
+  } else if(newUserChannel === undefined){
+    // User leaves a voice channel
+    //let message = ("Se fue este culiao llamado " + newUserChannel) 
+    //talker.vocalize(message, null);
+  }
+})
+
 // join to the channel
 
 const talker = {
@@ -73,20 +90,13 @@ const talker = {
   },
 
   leave(message){
-    //nothing yet
+    
     
   },
 
-  talk(message){
-
-    // limit to 300 characteres
-    console.log("talk current channel : " + talker.current_channel );
-    let parsedMessage = message.content.replace(prefix + "talk","");
-    let current_message = parsedMessage !== ""? parsedMessage  : null  ;
-    console.log("current message: " + current_message);
-
-    if(talker.current_channel !== null){
-      client.channels.fetch(talker.current_channel).then((channel) =>{
+  vocalize(current_message, message){
+    if(this.current_channel !== null){
+      client.channels.fetch(this.current_channel).then((channel) =>{
         if (channel && channel.type === 'voice'){
           channel.join().then((conn) => {
             // que tiene esta wea
@@ -101,8 +111,19 @@ const talker = {
         }
       });
     }else{
-      message.reply('Acuerdate unirte a un canal de voz pao culiao! 🍰');
+      if(message !== null){
+        message.reply("Acuerdate de agregarme a un canal de voz pao culiao.");
+      }
     }
+  },
+
+  talk(message){
+    // limit to 300 characteres
+    console.log("talk current channel : " + talker.current_channel );
+    let parsedMessage = message.content.replace(prefix + "talk","");
+    let current_message = parsedMessage !== ""? parsedMessage  : null  ;
+    console.log("current message: " + current_message);
+    this.vocalize(current_message, message);
   },
 
   GetFromAPi(message){
