@@ -4,7 +4,7 @@ const http = require('http');
 const { resolveTxt } = require('dns');
 
 function GetToken() {
-    let secretFile = require('../utils/secret.json');
+    let secretFile = require('../utils/secret.JSON');
     return secretFile.discordApi;
 }
 
