@@ -4,8 +4,21 @@ const http = require('http');
 const { resolveTxt } = require('dns');
 
 function GetToken() {
-    let secretFile = require('../utils/secret.JSON');
-    return secretFile.discordApi;
+
+    fs.readFile('./utils/secret.JSON', (err, jsonString) => {
+        if(err){
+            console.log("Error reading file from disk", err);
+            return;
+        }
+        try{
+            let secretFile = JSON.parse(jsonString);
+            return secretFile.discordApi;
+        }
+        catch (err){
+            console.log("Error parsing Json string:", err);
+            return
+        }
+    });
 }
 
 function GetFacebookToken(){
