@@ -6,7 +6,7 @@ const { resolveTxt } = require('dns');
 
 function GetToken() {
 
-    let filePath = path.join(__dirname,'secret.JSON');
+    let filePath = path.join(__dirname,'secret.json');
     console.log("current path : " + filePath);
 
     fs.readFile(filePath, (err, jsonString) => {
