@@ -6,23 +6,10 @@ const { resolveTxt } = require('dns');
 
 function GetToken() {
 
-    let filePath = path.join(__dirname,'secret.json');
-    console.log("current path : " + filePath);
-
-    fs.readFile(filePath, (err, jsonString) => {
-        if(err){
-            console.log("Error reading file from disk", err);
-            return;
-        }
-        try{
-            let secretFile = JSON.parse(jsonString);
-            return secretFile.discordApi;
-        }
-        catch (err){
-            console.log("Error parsing Json string:", err);
-            return
-        }
-    });
+    let fileName  = 'secret.json'
+    let filePath = path.join(__dirname, fileName);
+    let secret = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return secret.discordApi;
 }
 
 function GetFacebookToken(){
