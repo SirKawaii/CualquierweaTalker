@@ -1,11 +1,14 @@
 // utils.js
 const fs = require('fs');
+const path = require('path');
 const http = require('http');
 const { resolveTxt } = require('dns');
 
 function GetToken() {
 
-    fs.readFile('./utils/secret.JSON', (err, jsonString) => {
+    let filePath = path.normalize('./utils/secret.JSON');
+
+    fs.readFile(filePath, (err, jsonString) => {
         if(err){
             console.log("Error reading file from disk", err);
             return;
