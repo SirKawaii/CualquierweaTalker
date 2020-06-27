@@ -18,6 +18,9 @@ client.on('message', msg => {
     //joinToChannel(msg);
     talker.join(msg);
   }
+  if(msg.content === prefix + 'help'){
+    talker.help(msg);
+  }
   if(msg.content.startsWith(prefix + 'talk')){
     talker.talk(msg);
   }
@@ -36,12 +39,18 @@ client.on('message', msg => {
   if(msg.content.startsWith(prefix + 'set_video')){
     talker.SetLiveVideoID(msg);
   }
+  if(msg.content === prefix + 'get_chat'){
+    talker.GetLiveVideoChat(msg);
+  }
 });
 
 // client login .
 let token = Utils.GetToken();
-client.login(token);
-
+if(token === undefined){
+  console.log("Don't forget to set your discord api key on the secret file.")
+}else{
+  client.login(token);
+}
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
   let newUserChannel = newMember.member.displayName;
@@ -64,7 +73,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
 const talker = {
 
   current_channel: null,
-  facebook_access_token: null,
+  facebook_access_token: Utils.GetFacebookToken(),
   live_channel_id: null,
 
   test(message){
@@ -76,6 +85,24 @@ const talker = {
 
   help(message){
     // work in progress
+    let channel = message.channel;
+
+    const myweaDeEmbed = new Discord.MessageEmbed()
+      .setColor('#0099ff')
+      .setTitle('CualquierWeApp Help')
+      .setURL('https://github.com/SirKawaii/CualquierweaTalker')
+      .setDescription('this app will never be completed.')
+      .addFields(
+        { name: 'Help commands', value: 'Some help commands.' },
+        { name: '\u200B', value: '\u200B' },
+        { name: prefix + 'join', value: 'Join bot to voice channel', inline: true },
+        { name: prefix + 'talk', value: 'Spoke the next text inline', inline: true },
+        { name: prefix + 'set_token', value: 'Set the facebook live token', inline: true},
+        { name: prefix + 'set_video', value: 'Set the live video ID', inline: true}
+      )
+      .setTimestamp();
+
+    channel.send(myweaDeEmbed);
   },
 
   join(message){
@@ -90,8 +117,7 @@ const talker = {
   },
 
   leave(message){
-    
-    
+    // no implemented
   },
 
   vocalize(current_message, message){
@@ -159,7 +185,7 @@ const talker = {
     let apiPath = "/" + this.live_channel_id + "/live_comments?access_token=" + this.facebook_access_token
 
     let options = {
-      host: "https://graph.facebook.com",
+      host: "graph.facebook.com",
       port: 80,
       path: apiPath,
       method: 'GET'

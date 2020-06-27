@@ -14,6 +14,10 @@ function GetToken() {
 
 function GetFacebookToken(){
     //not implemented
+    let fileName  = 'secret.json'
+    let filePath = path.join(__dirname, fileName);
+    let secret = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    return secret.facebookChatAPi;
 }
 
 
@@ -71,5 +75,6 @@ module.exports = {
     GetToken,
     GetApiRequest,
     DoRequest,
+    GetFacebookToken,
     options
 }
